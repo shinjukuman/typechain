@@ -1,0 +1,8 @@
+{
+  "name": "typechain",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/chrisgardner402/typechain.git",
+  "author": "chrisgardner402 <chojh3308@gmail.com>",
+  "license": "MIT"
+}
