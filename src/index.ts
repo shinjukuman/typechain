@@ -1,12 +1,7 @@
 import * as CryptoJS from "crypto-js";
+import { flattenDiagnosticMessageText } from "typescript";
 
 class Block {
-  public index: number;
-  public hash: string;
-  public previousHash: string;
-  public data: string;
-  public timestamp: number;
-
   static calculateBlockHash = (
     index: number,
     previousHash: string,
@@ -15,6 +10,19 @@ class Block {
   ): string => {
     return CryptoJS.SHA256(index + previousHash + data + timestamp).toString();
   };
+
+  static validateStructure = (aBlock: Block): boolean =>
+    typeof aBlock.index === "number" &&
+    typeof aBlock.hash === "string" &&
+    typeof aBlock.previousHash === "string" &&
+    typeof aBlock.data === "string" &&
+    typeof aBlock.timestamp === "number";
+
+  public index: number;
+  public hash: string;
+  public previousHash: string;
+  public data: string;
+  public timestamp: number;
 
   constructor(
     index: number,
@@ -61,6 +69,14 @@ const createNewBlock = (data: string): Block => {
   return newBlock;
 };
 
-console.log(createNewBlock("Hello"), createNewBlock("bye bye"));
+const isBlockValid = (candidateBlock: Block, previousBlock: Block): boolean => {
+  if (!Block.validateStructure(candidateBlock)) {
+    return false;
+  } else if (candidateBlock.index !== previousBlock.index + 1) {
+    return false;
+  } else if (candidateBlock.hash !== previousBlock.hash) {
+    return false;
+  }
+};
 
 export {};
