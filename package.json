@@ -4,5 +4,9 @@
   "main": "index.js",
   "repository": "https://github.com/chrisgardner402/typechain.git",
   "author": "chrisgardner402 <chojh3308@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "scripts": {
+    "start": "node index.js",
+    "prestart": "tsc"
+  }
 }
