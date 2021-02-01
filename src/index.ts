@@ -1,5 +1,5 @@
 import * as CryptoJS from "crypto-js";
-import { flattenDiagnosticMessageText } from "typescript";
+import { createNew, flattenDiagnosticMessageText } from "typescript";
 
 class Block {
   static calculateBlockHash = (
@@ -66,6 +66,7 @@ const createNewBlock = (data: string): Block => {
     data,
     newTimestamp
   );
+  addBlock(newBlock);
   return newBlock;
 };
 
@@ -80,21 +81,27 @@ const getHashforBlock = (aBlock: Block): string =>
 const isBlockValid = (candidateBlock: Block, previousBlock: Block): boolean => {
   if (!Block.validateStructure(candidateBlock)) {
     return false;
-  } else if (candidateBlock.index !== previousBlock.index + 1) {
+  } else if (previousBlock.index + 1 !== candidateBlock.index) {
     return false;
-  } else if (candidateBlock.hash !== previousBlock.hash) {
+  } else if (previousBlock.hash !== candidateBlock.previousHash) {
     return false;
   } else if (getHashforBlock(candidateBlock) !== candidateBlock.hash) {
     return false;
   } else {
     return true;
   }
-
-  const addBlock = (candidateBlock: Block): void => {
-    if (isBlockValid(candidateBlock, getLatestBlock())) {
-      blockchain.push(candidateBlock);
-    }
-  };
 };
+
+const addBlock = (candidateBlock: Block): void => {
+  if (isBlockValid(candidateBlock, getLatestBlock())) {
+    blockchain.push(candidateBlock);
+  }
+};
+
+createNewBlock("second block");
+createNewBlock("third block");
+createNewBlock("fourth block");
+
+console.log(blockchain);
 
 export {};
